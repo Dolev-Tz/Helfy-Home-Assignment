@@ -1,0 +1,14 @@
+{
+  "name": "api-service",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/app.test.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "mysql2": "^3.9.7",
+    "kafkajs": "^2.2.4",
+    "log4js": "^6.9.1"
+  }
+}

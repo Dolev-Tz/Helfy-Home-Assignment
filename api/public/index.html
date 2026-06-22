@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>SRE Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 300px; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>System Login</h2>
+        <input type="text" id="user" placeholder="Username" onkeydown="if(event.key==='Enter') login()">
+        <input type="password" id="pass" placeholder="Password" onkeydown="if(event.key==='Enter') login()">
+        <button onclick="login()">Login</button>
+        <p id="out" style="margin-top:15px; font-weight:bold;"></p>
+    </div>
+    <script>
+        async function login() {
+            const out = document.getElementById('out');
+            const username = document.getElementById('user').value;
+            const password = document.getElementById('pass').value;
+            if (!username || !password) {
+                out.style.color = 'red';
+                out.innerText = 'Please fill in all fields';
+                return;
+            }
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            if(res.ok) {
+                out.style.color = 'green';
+                out.innerText = 'Success! Token: ' + data.token.substring(0,10) + '...';
+            } else {
+                out.style.color = 'red';
+                out.innerText = data.error;
+            }
+        }
+    </script>
+</body>
+</html>
